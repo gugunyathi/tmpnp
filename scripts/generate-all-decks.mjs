@@ -62,7 +62,7 @@ if (hasSoffice) {
 
 // Verify output files exist and log their sizes
 console.log("=== STEP 4: Verifying generated deck assets ===");
-for (const ext of ["pptx"]) {
+for (const ext of ["pptx", "ppt", "pdf"]) {
   const file = resolve(publicDir, `TM-Pick-n-Pay-Express.${ext}`);
   if (fs.existsSync(file)) {
     const stats = fs.statSync(file);
@@ -73,4 +73,4 @@ for (const ext of ["pptx"]) {
   }
 }
 
-console.log("=== SUCCESS: All 27 slides built and saved in public/ ===");
+console.log("=== SUCCESS: All slides built and saved in public/ ===");

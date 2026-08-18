@@ -18,14 +18,18 @@ export default function App() {
     try {
       setDownloading(filename);
 
-      const downloadUrl = `/api/download?file=${encodeURIComponent(filename)}`;
+      // Attempt 1: Fetch as blob and trigger browser download with proper object URL
+      const res = await fetch(`/api/download?file=${encodeURIComponent(filename)}`);
+      if (!res.ok) {
+        throw new Error(`Download HTTP error: ${res.status}`);
+      }
 
-      // Method 1: Direct link triggering with attachment disposition
+      const blob = await res.blob();
+      const blobUrl = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.style.display = "none";
-      link.href = downloadUrl;
+      link.href = blobUrl;
       link.download = filename;
-      link.target = "_blank";
       document.body.appendChild(link);
       link.click();
 
@@ -33,36 +37,29 @@ export default function App() {
         if (document.body.contains(link)) {
           document.body.removeChild(link);
         }
-      }, 500);
-
-      // Method 2: Data URL fallback via base64 endpoint for sandboxed iframe compatibility
-      try {
-        const res = await fetch(`/api/download-base64?file=${encodeURIComponent(filename)}`);
-        if (res.ok) {
-          const json = await res.json();
-          if (json.data && json.contentType) {
-            const dataUrl = `data:${json.contentType};base64,${json.data}`;
-            const b64Link = document.createElement("a");
-            b64Link.style.display = "none";
-            b64Link.href = dataUrl;
-            b64Link.download = filename;
-            document.body.appendChild(b64Link);
-            b64Link.click();
-            setTimeout(() => {
-              if (document.body.contains(b64Link)) {
-                document.body.removeChild(b64Link);
-              }
-            }, 500);
-          }
-        }
-      } catch (err) {
-        console.warn("Base64 download fallback skipped:", err);
-      }
+        window.URL.revokeObjectURL(blobUrl);
+      }, 1000);
     } catch (e) {
-      // Method 3: Direct popup/window location fallback
-      window.open(`/api/download?file=${encodeURIComponent(filename)}`, "_blank");
+      console.warn("Direct blob download failed, falling back to direct anchor link:", e);
+      try {
+        const directUrl = `/api/download?file=${encodeURIComponent(filename)}`;
+        const link = document.createElement("a");
+        link.style.display = "none";
+        link.href = directUrl;
+        link.download = filename;
+        link.target = "_blank";
+        document.body.appendChild(link);
+        link.click();
+        setTimeout(() => {
+          if (document.body.contains(link)) {
+            document.body.removeChild(link);
+          }
+        }, 1000);
+      } catch (fallbackErr) {
+        console.error("Download fallback error:", fallbackErr);
+      }
     } finally {
-      setTimeout(() => setDownloading(null), 1000);
+      setTimeout(() => setDownloading(null), 800);
     }
   };
 
