@@ -1,0 +1,6 @@
+{
+  "name": "TM Pick n Pay Express",
+  "description": "Executive pitch deck and interactive presentation evolving TM Pick n Pay's Click & Collect platform into a diaspora-to-door delivery engine with commercial models, moats, and financial projections.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

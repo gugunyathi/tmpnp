@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 540" width="540" height="540" fill="none">
+  <!-- TM Badge on Top -->
+  <g transform="translate(45, 45)">
+    <rect x="0" y="0" width="450" height="290" rx="48" fill="#0066c0" stroke="#0066c0" stroke-width="2"/>
+    <rect x="22" y="22" width="406" height="246" rx="36" fill="none" stroke="#ffffff" stroke-width="6"/>
+    
+    <!-- T -->
+    <path d="M 85 75 L 195 75 C 215 75 225 85 225 104 C 225 120 212 130 192 130 L 168 130 L 168 205 C 168 220 155 230 138 230 C 120 230 108 220 108 205 L 108 130 L 85 130 C 68 130 55 120 55 104 C 55 85 68 75 85 75 Z" fill="#67d2fe" stroke="#ffffff" stroke-width="5" stroke-linejoin="round"/>
+    
+    <!-- M -->
+    <g transform="translate(180, 75)">
+      <!-- Left leg of M -->
+      <path d="M 20 130 L 55 25 C 60 7 82 2 95 14 C 106 25 105 45 95 65 L 70 130 C 62 148 38 155 22 140 C 10 130 10 112 20 90 Z" fill="#67d2fe" stroke="#ffffff" stroke-width="5"/>
+      <!-- Right leg of M -->
+      <path d="M 85 130 L 120 25 C 125 7 147 2 160 14 C 171 25 170 45 160 65 L 135 130 C 127 148 103 155 87 140 C 75 130 75 112 85 90 Z" fill="#67d2fe" stroke="#ffffff" stroke-width="5"/>
+    </g>
+  </g>
+
+  <!-- Pick n Pay Wordmark on Bottom -->
+  <g transform="translate(25, 385)">
+    <!-- 'P' Navy Box -->
+    <rect x="0" y="0" width="86" height="86" rx="16" fill="#132742"/>
+    <text x="22" y="65" font-family="system-ui, -apple-system, sans-serif" font-weight="900" font-size="70" fill="#ffffff">P</text>
+    
+    <!-- 'ick n' -->
+    <text x="96" y="65" font-family="system-ui, -apple-system, sans-serif" font-weight="900" font-size="64" fill="#132742" letter-spacing="-1">ick n</text>
+    
+    <!-- 'P' Red Box -->
+    <g transform="translate(265, 0)">
+      <rect x="0" y="0" width="86" height="86" rx="16" fill="#c41230"/>
+      <text x="22" y="65" font-family="system-ui, -apple-system, sans-serif" font-weight="900" font-size="70" fill="#ffffff">P</text>
+    </g>
+    
+    <!-- 'ay' -->
+    <text x="362" y="65" font-family="system-ui, -apple-system, sans-serif" font-weight="900" font-size="64" fill="#c41230" letter-spacing="-1">ay</text>
+  </g>
+</svg>
