@@ -19,8 +19,10 @@ fs.mkdirSync(assetDir, { recursive: true });
 
 function cropImage(src, target, gravity, width, height) {
   const outPath = resolve(assetDir, target);
-  if (!fs.existsSync(outPath)) {
+  try {
     execSync(`convert "${src}" -gravity ${gravity} -crop ${width}x${height}+0+0 +repage "${outPath}"`);
+  } catch (e) {
+    if (!fs.existsSync(outPath)) throw e;
   }
   return outPath;
 }
@@ -108,7 +110,7 @@ function panel(slide, { x, y, w, h, heading, body, fill = "1E426F", head = WHITE
   const cw = 2.15, ch = 3.15;
   card(s, { x: 0.45, y: 1.8, w: cw, h: ch, heading: "The foundation", body: "tmpnponline.co.zw and the dedicated app are already live, running localized Click & Collect across the estate.", hs: 13, bs: 10, hh: 0.5 });
   card(s, { x: 0.45 + cw + 0.15, y: 1.8, w: cw, h: ch, heading: "The optimization gap", accent: BLUE, body: "Collection demands transport, fuel and time. Diaspora buyers still pay Malayitsha vans purely for doorstep convenience.", hs: 13, bs: 10, hh: 0.5 });
-  card(s, { x: 0.45 + 2 * (cw + 0.15), y: 1.8, w: cw, h: ch, heading: "Our value proposition", body: "A Diaspora UI mode plus a decentralised last-mile network turns 57+ branches into on-demand fulfilment nodes.", hs: 13, bs: 10, hh: 0.5 });
+  card(s, { x: 0.45 + 2 * (cw + 0.15), y: 1.8, w: cw, h: ch, heading: "Our value proposition", body: "A Diaspora UI mode plus a decentralised last-mile network turns 74+ branches into on-demand fulfilment nodes.", hs: 13, bs: 10, hh: 0.5 });
   
   // Right side photo matching web app card
   s.addShape(pptx.ShapeType.roundRect, { x: 7.35, y: 1.8, w: 2.2, h: ch, fill: { color: WHITE }, line: { color: "E2E5EB" }, rectRadius: 0.08 });
@@ -751,7 +753,7 @@ function panel(slide, { x, y, w, h, heading, body, fill = "1E426F", head = WHITE
   s.background = { color: BLUE_DEEP };
   s.addShape(pptx.ShapeType.roundRect, { x: 4.2, y: 0.55, w: 1.6, h: 1.35, fill: { color: WHITE }, line: { color: WHITE }, rectRadius: 0.1 });
   s.addImage({ data: LOGO_SQUARE, x: 4.3, y: 0.65, w: 1.4, h: 1.15 });
-  s.addText("Turn 57+ branches into a diaspora fulfilment network", { x: 1.0, y: 2.1, w: 8, h: 1.0, align: "center", valign: "top", fontFace: HEAD, fontSize: 30, bold: true, color: WHITE });
+  s.addText("Turn 74+ branches into a diaspora fulfilment network", { x: 1.0, y: 2.1, w: 8, h: 1.0, align: "center", valign: "top", fontFace: HEAD, fontSize: 30, bold: true, color: WHITE });
   s.addShape(pptx.ShapeType.roundRect, { x: 4.4, y: 3.25, w: 1.2, h: 0.08, fill: { color: RED }, line: { color: RED }, rectRadius: 0.04 });
   s.addText("Recommended next step: select a commercial structure and mandate a 60-day pilot on two flagship Harare branches.", { x: 1.6, y: 3.6, w: 6.8, h: 0.9, align: "center", fontFace: BODY, fontSize: 15, color: "C6D3E4" });
   s.addText("TM Pick n Pay Express", { x: 0.45, y: H - 0.5, w: 4, h: 0.3, fontFace: BODY, fontSize: 9, color: "8C9BB0" });

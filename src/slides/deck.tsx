@@ -25,13 +25,14 @@ function TitleSlide() {
       <img
         src={deliveryDoor}
         alt="Courier handing groceries to a family at their door"
+        referrerPolicy="no-referrer"
         width={1600}
         height={1000}
         className="absolute right-0 top-0 h-full w-[900px] object-cover"
       />
       <div className="absolute inset-0 bg-gradient-to-r from-pnp-blue-deep via-pnp-blue-deep/95 to-transparent" />
       <div className="absolute left-[96px] top-[110px] rounded-2xl bg-white px-6 py-4 shadow-md">
-        <img src={logoRect} alt="TM Pick n Pay" className="h-[52px] w-auto max-w-[300px] object-contain" />
+        <img src={logoRect} alt="TM Pick n Pay" referrerPolicy="no-referrer" className="h-[52px] w-auto max-w-[300px] object-contain" />
       </div>
       <div className="absolute left-[96px] top-[300px] w-[1000px]">
         <span className="slide-kicker text-pnp-gold">Executive Board Proposal</span>
@@ -70,7 +71,7 @@ function OpportunitySlide() {
               purely for doorstep convenience.
             </Card>
             <Card title="Our value proposition">
-              A Diaspora UI mode plus a decentralised last-mile network turns 57+ branches into
+              A Diaspora UI mode plus a decentralised last-mile network turns 74+ branches into
               on-demand fulfilment nodes.
             </Card>
           </div>
@@ -78,6 +79,7 @@ function OpportunitySlide() {
             <img
               src={diasporaShopper}
               alt="Diaspora shopper ordering groceries on her phone"
+              referrerPolicy="no-referrer"
               width={1600}
               height={1000}
               loading="lazy"
@@ -451,6 +453,7 @@ function OptionsASlide() {
           <img
             src={storePicking}
             alt="Store staff picking online grocery orders"
+            referrerPolicy="no-referrer"
             width={1600}
             height={1000}
             loading="lazy"
@@ -539,6 +542,7 @@ function FirstMoverSlide() {
       <img
         src={deliveryDoor}
         alt="Family receiving a grocery delivery"
+        referrerPolicy="no-referrer"
         width={1600}
         height={1000}
         loading="lazy"
@@ -651,10 +655,10 @@ function CloseSlide() {
     <SlideBase tone="blue">
       <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
         <div className="rounded-2xl bg-white p-6 shadow-xl border border-white/20">
-          <img src={logoSquare} alt="TM Pick n Pay" className="h-[110px] w-auto max-w-[170px] object-contain mx-auto" />
+          <img src={logoSquare} alt="TM Pick n Pay" referrerPolicy="no-referrer" className="h-[110px] w-auto max-w-[170px] object-contain mx-auto" />
         </div>
         <h2 className="slide-title-lg mt-14 max-w-[1400px]">
-          Turn 57+ branches into a diaspora fulfilment network
+          Turn 74+ branches into a diaspora fulfilment network
         </h2>
         <div className="mt-10 h-[10px] w-[240px] rounded-full bg-pnp-red" />
         <p className="slide-subtitle mt-10 max-w-[1200px] text-white/80">

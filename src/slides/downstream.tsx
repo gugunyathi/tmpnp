@@ -262,6 +262,7 @@ function ScooterSlide() {
           <img
             src={bikeCourier}
             alt="Electric scooter courier on a delivery route"
+            referrerPolicy="no-referrer"
             width={1600}
             height={1000}
             loading="lazy"
@@ -412,6 +413,7 @@ function WholesaleSlide() {
           <img
             src={storePicking}
             alt="Wholesale stock being picked for local distribution"
+            referrerPolicy="no-referrer"
             width={1600}
             height={1000}
             loading="lazy"

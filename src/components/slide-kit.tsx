@@ -47,7 +47,7 @@ export function SlideChrome({
     <>
       <div className="absolute left-[96px] top-[72px] flex items-center gap-6">
         <div className="rounded-xl bg-white px-4 py-2.5 shadow-sm">
-          <img src={logoRect} alt="TM Pick n Pay" className="h-[38px] w-auto max-w-[210px] object-contain" />
+          <img src={logoRect} alt="TM Pick n Pay" referrerPolicy="no-referrer" className="h-[38px] w-auto max-w-[210px] object-contain" />
         </div>
         <span className={`slide-kicker ${tone === "paper" ? "text-pnp-red" : "text-white/80"}`}>
           {`Slide ${String(n).padStart(2, "0")} · ${label}`}
