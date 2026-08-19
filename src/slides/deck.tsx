@@ -1,13 +1,11 @@
 import type React from "react";
-import bikeCourier from "@/assets/bike-courier.jpg";
-import homePageImage from "@/assets/home-page.png";
-import slide2Image from "@/assets/slide-2.png";
-import slide6Image from "@/assets/slide-6.png";
-import slide11Image from "@/assets/slide-11.png";
-import logoRect from "@/assets/tmpnp-logo-rect.png";
-import logoSquare from "@/assets/tmpnp-logo-square.png";
 import { Body, Card, Pill, SlideBase, SlideChrome } from "@/components/slide-kit";
 import { downstreamSlides, MoatSlide } from "@/slides/downstream";
+
+const homePageImage = "/HomePageImage.png";
+const slide2Image = "/Slide2Image.png";
+const logoRect = "/tm-pick n pay logo rectangle.jpg";
+const logoSquare = "/tm-pick n pay logo square.jpg";
 
 
 const REVENUE = [
@@ -141,7 +139,7 @@ function StatusQuoSlide() {
             steps={[
               "Local & Diaspora shopper",
               "Targeted ad tracking",
-              "Pure US$ gateway",
+              "Multi-Currency gateway",
               "Local bike courier",
               "Recipient's door",
             ]}
@@ -555,15 +553,15 @@ function FirstMoverSlide() {
           </h2>
           <div className="mt-8 space-y-6">
             <div className="rounded-3xl bg-white/12 p-8">
-              <Pill tone="light">Market leadership</Pill>
-              <p className="slide-body mt-4 text-white/90">
+              <h3 className="slide-body font-bold text-white">Market leadership</h3>
+              <p className="slide-body mt-3 text-white/90">
                 While competitors stay focused on brick-and-mortar or basic localized delivery, TM
                 PnP becomes the definitive door-to-door retail pipeline for the local and diaspora ecosystem.
               </p>
             </div>
             <div className="rounded-3xl bg-white/12 p-8">
-              <Pill tone="light">Maximising group assets</Pill>
-              <p className="slide-body mt-4 text-white/90">
+              <h3 className="slide-body font-bold text-white">Maximising group assets</h3>
+              <p className="slide-body mt-3 text-white/90">
                 Collection desks convert into high-volume dispatch stations, lifting stock turnover
                 speed across all primary product lines.
               </p>

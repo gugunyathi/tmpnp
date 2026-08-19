@@ -1,6 +1,4 @@
 import type React from "react";
-import bikeCourier from "@/assets/bike-courier.jpg";
-import storePicking from "@/assets/store-picking.jpg";
 import { Body, Card, SlideBase, SlideChrome } from "@/components/slide-kit";
 
 /* ------------------------------------------------------------------ */
@@ -125,14 +123,14 @@ function PriceEngineSlide() {
         <h2 className="slide-title text-pnp-blue">
           Item-level price comparison is the reason to participate
         </h2>
-        <div className="mt-12 grid grid-cols-[1.15fr_1fr] gap-10">
-          <div className="rounded-3xl border border-pnp-line bg-white p-10 shadow-sm">
+        <div className="mt-7 grid grid-cols-[1.15fr_1fr] gap-8">
+          <div className="rounded-3xl border border-pnp-line bg-white p-8 shadow-sm">
             <div className="slide-chrome text-pnp-muted">Shopper request · &ldquo;cooking oil&rdquo;</div>
-            <div className="mt-6 flex flex-col gap-4">
+            <div className="mt-5 flex flex-col gap-3">
               {OIL_ROWS.map(([item, price, note], i) => (
                 <div
                   key={item}
-                  className={`flex items-center justify-between rounded-2xl px-8 py-6 ${
+                  className={`flex items-center justify-between rounded-2xl px-7 py-4 ${
                     i === 0 ? "bg-pnp-blue text-white" : "bg-pnp-paper text-pnp-ink"
                   }`}
                 >
@@ -149,7 +147,7 @@ function PriceEngineSlide() {
               ))}
             </div>
           </div>
-          <div className="flex flex-col gap-8">
+          <div className="flex flex-col gap-6">
             <Card title="Comparison across every participating supplier">
               One request fans out to all listed suppliers. The shopper sees price, distance and
               slot side by side and picks. Price competition, not shelf position, decides the sale.
@@ -251,17 +249,6 @@ function ScooterSlide() {
               first cohort.
             </p>
           </div>
-        </div>
-        <div className="mt-8 overflow-hidden rounded-3xl">
-          <img
-            src={bikeCourier}
-            alt="Electric scooter courier on a delivery route"
-            referrerPolicy="no-referrer"
-            width={1600}
-            height={1000}
-            loading="lazy"
-            className="h-[190px] w-full object-cover"
-          />
         </div>
       </Body>
     </SlideBase>
@@ -402,17 +389,6 @@ function WholesaleSlide() {
             Routing informal trade through the platform makes it visible: tax is captured, stock is
             traceable and counterfeit product is squeezed out. Legitimisation, not enforcement.
           </Card>
-        </div>
-        <div className="mt-5 overflow-hidden rounded-3xl">
-          <img
-            src={storePicking}
-            alt="Wholesale stock being picked for local distribution"
-            referrerPolicy="no-referrer"
-            width={1600}
-            height={1000}
-            loading="lazy"
-            className="h-[130px] w-full object-cover"
-          />
         </div>
       </Body>
     </SlideBase>
