@@ -41,12 +41,6 @@ function WhyNowSlide() {
             </Card>
           ))}
         </div>
-        <div className="mt-10 rounded-3xl bg-pnp-blue px-12 py-8">
-          <p className="slide-subtitle text-white">
-            Positioning discipline: the pitch is market access and demand intelligence. Framed as a
-            diaspora product, it reads as a niche remittance play and stalls in committee.
-          </p>
-        </div>
       </Body>
     </SlideBase>
   );
@@ -377,7 +371,7 @@ function WholesaleSlide() {
         <h2 className="slide-title text-pnp-blue">
           Tuck shops become distribution extensions, not competitors
         </h2>
-        <div className="mt-12 grid grid-cols-4 gap-6">
+        <div className="mt-8 grid grid-cols-4 gap-6">
           {[
             ["Aggregate", "Local orders in a suburb are pooled in the app rather than fragmented across trips."],
             ["Fulfil locally", "The nearest tuck shop picks and hands over, cutting distance, fuel and delivery cost."],
@@ -386,19 +380,19 @@ function WholesaleSlide() {
           ].map(([t, d], i) => (
             <div
               key={t}
-              className={`rounded-3xl p-9 ${
+              className={`rounded-3xl p-7 ${
                 i % 2 ? "bg-white border border-pnp-line" : "bg-pnp-blue text-white"
               }`}
             >
               <div className={`slide-chrome ${i % 2 ? "text-pnp-muted" : "text-white/70"}`}>
                 Step {i + 1}
               </div>
-              <h3 className={`slide-subtitle mt-3 ${i % 2 ? "text-pnp-blue" : "text-white"}`}>{t}</h3>
-              <p className={`slide-body mt-4 ${i % 2 ? "text-pnp-muted" : "text-white/80"}`}>{d}</p>
+              <h3 className={`text-[26px] font-bold mt-2 ${i % 2 ? "text-pnp-blue" : "text-white"}`}>{t}</h3>
+              <p className={`slide-caption mt-3 ${i % 2 ? "text-pnp-muted" : "text-white/80"}`}>{d}</p>
             </div>
           ))}
         </div>
-        <div className="mt-10 grid grid-cols-2 gap-8">
+        <div className="mt-6 grid grid-cols-2 gap-8">
           <Card title="Pack size is the unlock">
             Households buy 200g, not 2kg. The retailer sells bulk to the tuck shop, the tuck shop
             repackages to the price point the street can afford — the small-multipack playbook
@@ -409,7 +403,7 @@ function WholesaleSlide() {
             traceable and counterfeit product is squeezed out. Legitimisation, not enforcement.
           </Card>
         </div>
-        <div className="mt-8 overflow-hidden rounded-3xl">
+        <div className="mt-5 overflow-hidden rounded-3xl">
           <img
             src={storePicking}
             alt="Wholesale stock being picked for local distribution"
@@ -417,7 +411,7 @@ function WholesaleSlide() {
             width={1600}
             height={1000}
             loading="lazy"
-            className="h-[150px] w-full object-cover"
+            className="h-[130px] w-full object-cover"
           />
         </div>
       </Body>

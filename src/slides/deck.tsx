@@ -434,7 +434,7 @@ function OptionsASlide() {
       <SlideChrome kicker="Slide 05 · Business Model Options" index={6} hideFooter />
       <Body>
         <h2 className="slide-title text-pnp-blue">Aligning risk, capital and structure</h2>
-        <div className="mt-10 grid grid-cols-2 gap-8">
+        <div className="mt-7 grid grid-cols-2 gap-8">
           <OptionCard
             n="Option 1"
             title="Independent Concierge (Reseller)"
@@ -450,7 +450,7 @@ function OptionsASlide() {
             revenue="1.5–2% GMV revenue share"
           />
         </div>
-        <div className="mt-8 overflow-hidden rounded-3xl">
+        <div className="mt-6 overflow-hidden rounded-3xl">
           <img
             src="/Slide11Image.png"
             alt="Store staff picking online grocery orders"
@@ -458,7 +458,7 @@ function OptionsASlide() {
             width={1600}
             height={1000}
             loading="lazy"
-            className="h-[220px] w-full object-cover"
+            className="h-[180px] w-full object-cover"
           />
         </div>
       </Body>
@@ -544,25 +544,26 @@ function FirstMoverSlide() {
         src="/Slide6Image.png"
         alt="TM Pick n Pay delivery person"
         referrerPolicy="no-referrer"
-        className="absolute right-0 top-0 h-full w-[45%] object-cover"
-        style={{ objectPosition: "center" }}
+        className="absolute right-0 top-0 h-full w-[46%] object-cover object-center"
       />
-      <div className="absolute inset-0 bg-gradient-to-r from-pnp-red-deep via-pnp-red-deep/95 to-transparent" style={{ width: "60%" }} />
-      <SlideChrome kicker="Slide 08 · First-Mover Advantage" index={10} tone="red" />
+      <div className="absolute inset-0 bg-gradient-to-r from-pnp-red-deep via-pnp-red-deep/90 to-transparent" style={{ width: "58%" }} />
+      <SlideChrome kicker="Slide 08 · First-Mover Advantage" index={10} tone="red" hideFooter />
       <Body>
-        <div className="w-[1050px]">
-          <h2 className="slide-title">A defensive moat against OK Zimbabwe &amp; Choppies</h2>
-          <div className="mt-12 space-y-8">
-            <div className="rounded-3xl bg-white/12 p-10">
+        <div className="max-w-[860px]">
+          <h2 className="text-[62px] font-extrabold leading-[1.08] tracking-tight">
+            A defensive moat against OK Zimbabwe &amp; Choppies
+          </h2>
+          <div className="mt-8 space-y-6">
+            <div className="rounded-3xl bg-white/12 p-8">
               <Pill tone="light">Market leadership</Pill>
-              <p className="slide-body-lg mt-5 text-white/90">
+              <p className="slide-body mt-4 text-white/90">
                 While competitors stay focused on brick-and-mortar or basic localized delivery, TM
                 PnP becomes the definitive door-to-door retail pipeline for the local and diaspora ecosystem.
               </p>
             </div>
-            <div className="rounded-3xl bg-white/12 p-10">
+            <div className="rounded-3xl bg-white/12 p-8">
               <Pill tone="light">Maximising group assets</Pill>
-              <p className="slide-body-lg mt-5 text-white/90">
+              <p className="slide-body mt-4 text-white/90">
                 Collection desks convert into high-volume dispatch stations, lifting stock turnover
                 speed across all primary product lines.
               </p>
@@ -605,17 +606,19 @@ function ValuePropSlide() {
       <SlideChrome kicker="Slide 09 · Value Proposition" index={11} />
       <Body>
         <h2 className="slide-title text-pnp-blue">What the platform uniquely delivers</h2>
-        <div className="mt-10 grid grid-cols-4 grid-rows-2 gap-7">
+        <div className="mt-6 grid grid-cols-4 grid-rows-2 gap-5">
           {VALUE_PROPS.map(([t, d], idx) => (
             <div
               key={t}
-              className="flex flex-col rounded-3xl border border-pnp-line bg-white p-8 shadow-sm"
+              className="flex flex-col justify-between rounded-3xl border border-pnp-line bg-white p-6 shadow-sm"
             >
-              <div
-                className={`mb-4 h-[8px] w-[64px] rounded-full ${idx % 2 ? "bg-pnp-blue" : "bg-pnp-red"}`}
-              />
-              <h3 className="slide-subtitle text-pnp-blue">{t}</h3>
-              <p className="slide-caption mt-3 text-pnp-muted">{d}</p>
+              <div>
+                <div
+                  className={`mb-3 h-[6px] w-[52px] rounded-full ${idx % 2 ? "bg-pnp-blue" : "bg-pnp-red"}`}
+                />
+                <h3 className="text-[26px] font-bold leading-tight text-pnp-blue">{t}</h3>
+              </div>
+              <p className="text-[19px] leading-snug text-pnp-muted mt-3">{d}</p>
             </div>
           ))}
         </div>

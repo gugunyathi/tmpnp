@@ -319,7 +319,7 @@ export default function App() {
             onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}
           >
-            <div className="aspect-video w-full max-w-[1600px] max-h-[calc(100dvh-130px)] sm:max-h-[calc(100vh-150px)] overflow-hidden rounded-xl sm:rounded-2xl shadow-2xl bg-pnp-paper">
+            <div className="aspect-video w-full max-w-[1600px] max-h-[calc(100dvh-130px)] sm:max-h-[calc(100vh-150px)] overflow-hidden rounded-xl sm:rounded-2xl shadow-2xl bg-transparent">
               <ScaledSlide>
                 <SlideIndexProvider value={i + 1}>
                   <Current />
