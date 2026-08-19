@@ -19,19 +19,20 @@ export default function handler(req: any, res: any) {
     return;
   }
 
-  const ext = path.extname(safeFilename).toLowerCase();
+  let targetFile = safeFilename;
+  if (targetFile === "TM-Pick-n-Pay-Express.ppt") {
+    targetFile = "TM-Pick-n-Pay-Express.pptx";
+  }
+
+  const ext = path.extname(targetFile).toLowerCase();
   let contentType = "application/octet-stream";
   if (ext === ".pptx") {
     contentType =
       "application/vnd.openxmlformats-officedocument.presentationml.presentation";
-  } else if (ext === ".ppt") {
-    contentType = "application/vnd.ms-powerpoint";
   } else if (ext === ".pdf") {
     contentType = "application/pdf";
   }
 
-  // Redirect to the statically-served file. fetch() follows redirects,
-  // so the frontend blob-download approach works without server-side streaming.
   res.setHeader("Content-Type", contentType);
-  res.redirect(302, `/${safeFilename}`);
+  res.redirect(302, `/${targetFile}`);
 }

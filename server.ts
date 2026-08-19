@@ -21,7 +21,10 @@ async function startServer() {
   // Dedicated download endpoint with explicit headers & attachment disposition
   app.get("/api/download", (req, res) => {
     const rawFile = (req.query.file as string) || "TM-Pick-n-Pay-Express.pptx";
-    const safeFilename = path.basename(rawFile);
+    let safeFilename = path.basename(rawFile);
+    if (safeFilename === "TM-Pick-n-Pay-Express.ppt") {
+      safeFilename = "TM-Pick-n-Pay-Express.pptx";
+    }
 
     const publicPath = path.join(process.cwd(), "public", safeFilename);
     const distPath = path.join(process.cwd(), "dist", safeFilename);
@@ -37,8 +40,6 @@ async function startServer() {
     let contentType = "application/octet-stream";
     if (ext === ".pptx") {
       contentType = "application/vnd.openxmlformats-officedocument.presentationml.presentation";
-    } else if (ext === ".ppt") {
-      contentType = "application/vnd.ms-powerpoint";
     } else if (ext === ".pdf") {
       contentType = "application/pdf";
     }

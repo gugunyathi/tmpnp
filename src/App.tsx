@@ -236,17 +236,6 @@ export default function App() {
             </span>
           </button>
 
-          {/* Download PPT Legacy - hidden on mobile & tablets */}
-          <button
-            onClick={() => downloadFile("TM-Pick-n-Pay-Express.ppt")}
-            disabled={downloading === "TM-Pick-n-Pay-Express.ppt"}
-            title="Download binary PPT PowerPoint format (27 slides)"
-            className="hidden xl:inline-flex items-center gap-1.5 cursor-pointer rounded-full bg-white/15 px-3 py-1.5 text-xs font-semibold text-white transition-all hover:bg-white/25 active:scale-95 disabled:opacity-50"
-          >
-            <FileDown className="w-3.5 h-3.5 text-pnp-gold" />
-            <span>PPT (Legacy)</span>
-          </button>
-
           {/* Fullscreen / Present Button */}
           <button
             onClick={toggleFullscreen}
