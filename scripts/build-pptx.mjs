@@ -203,8 +203,7 @@ function panel(slide, { x, y, w, h, heading, body, fill = "1E426F", head = WHITE
   s.addText("A defensive moat against OK Zimbabwe & Choppies", { x: 0.45, y: 0.95, w: 5.1, h: 0.85, fontFace: HEAD, fontSize: 24, bold: true, color: WHITE });
   const block = (y, tag, text) => {
     s.addShape(pptx.ShapeType.roundRect, { x: 0.45, y, w: 5.1, h: 1.35, fill: { color: "C21740" }, line: { color: "C21740" }, rectRadius: 0.08 });
-    s.addShape(pptx.ShapeType.roundRect, { x: 0.68, y: y + 0.18, w: 1.75, h: 0.3, fill: { color: WHITE }, line: { color: WHITE }, rectRadius: 0.15 });
-    s.addText(tag, { x: 0.68, y: y + 0.18, w: 1.75, h: 0.3, align: "center", valign: "middle", fontFace: BODY, fontSize: 9.5, bold: true, color: RED_DEEP, margin: 0 });
+    s.addText(tag, { x: 0.68, y: y + 0.18, w: 4.65, h: 0.35, fontFace: BODY, fontSize: 13, bold: true, color: WHITE, margin: 0, valign: "top" });
     s.addText(text, { x: 0.68, y: y + 0.58, w: 4.65, h: 0.68, fontFace: BODY, fontSize: 11, color: "FDE7EC", margin: 0, valign: "top" });
   };
   block(1.95, "Market leadership", "While competitors stay focused on brick-and-mortar or basic localized delivery, TM PnP becomes the definitive door-to-door retail pipeline for the local and diaspora ecosystem.");
