@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { ScaledSlide } from "@/components/ScaledSlide";
 import { SlideIndexProvider } from "@/components/slide-kit";
 import { slides } from "@/slides/deck";
@@ -12,6 +12,7 @@ import {
   Maximize2,
   Minimize2,
   Presentation,
+  X,
   Printer,
 } from "lucide-react";
 
@@ -20,32 +21,76 @@ export default function App() {
   const [grid, setGrid] = useState(false);
   const [downloading, setDownloading] = useState<string | null>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isImmersive, setIsImmersive] = useState(false); // mobile fill-screen mode
+  const [pinchScale, setPinchScale] = useState(1);
+  const [showControls, setShowControls] = useState(false); // tap-to-show in immersive
+  const controlsTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Touch gesture handling for mobile swipe
+  // Touch gesture handling for mobile swipe & pinch-to-zoom
   const touchStartX = useRef<number | null>(null);
   const touchStartY = useRef<number | null>(null);
+  const pinchStartDist = useRef<number | null>(null);
+  const pinchStartScale = useRef(1);
+  const lastTap = useRef(0);
 
   const go = useCallback(
     (n: number) => setI((c) => Math.min(slides.length - 1, Math.max(0, c + n))),
     [],
   );
 
+  const getPinchDist = (touches: React.TouchList) => {
+    const dx = touches[0].clientX - touches[1].clientX;
+    const dy = touches[0].clientY - touches[1].clientY;
+    return Math.sqrt(dx * dx + dy * dy);
+  };
+
   const handleTouchStart = (e: React.TouchEvent) => {
-    touchStartX.current = e.touches[0].clientX;
-    touchStartY.current = e.touches[0].clientY;
+    if (e.touches.length === 2) {
+      // Pinch start
+      pinchStartDist.current = getPinchDist(e.touches);
+      pinchStartScale.current = pinchScale;
+      touchStartX.current = null; // cancel swipe
+    } else if (e.touches.length === 1) {
+      touchStartX.current = e.touches[0].clientX;
+      touchStartY.current = e.touches[0].clientY;
+    }
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (e.touches.length === 2 && pinchStartDist.current !== null) {
+      const dist = getPinchDist(e.touches);
+      const newScale = Math.min(4, Math.max(0.5, pinchStartScale.current * (dist / pinchStartDist.current)));
+      setPinchScale(newScale);
+    }
   };
 
   const handleTouchEnd = (e: React.TouchEvent) => {
+    if (pinchStartDist.current !== null && e.touches.length < 2) {
+      pinchStartDist.current = null;
+      return;
+    }
     if (touchStartX.current === null || touchStartY.current === null) return;
     const deltaX = e.changedTouches[0].clientX - touchStartX.current;
     const deltaY = e.changedTouches[0].clientY - touchStartY.current;
+    const isTap = Math.abs(deltaX) < 10 && Math.abs(deltaY) < 10;
 
-    // Only trigger swipe if horizontal distance > 45px and dominant over vertical
-    if (Math.abs(deltaX) > 45 && Math.abs(deltaX) > Math.abs(deltaY)) {
+    if (isTap && isImmersive) {
+      // Tap toggles floating controls in immersive mode
+      setShowControls((v) => {
+        const next = !v;
+        if (next) {
+          // Auto-hide after 3s
+          if (controlsTimer.current) clearTimeout(controlsTimer.current);
+          controlsTimer.current = setTimeout(() => setShowControls(false), 3000);
+        }
+        return next;
+      });
+    } else if (pinchScale <= 1.05 && Math.abs(deltaX) > 45 && Math.abs(deltaX) > Math.abs(deltaY)) {
+      // Swipe navigation
       if (deltaX < 0) {
-        go(1); // Swipe left -> next slide
+        go(1);
       } else {
-        go(-1); // Swipe right -> previous slide
+        go(-1);
       }
     }
 
@@ -102,7 +147,40 @@ export default function App() {
     }
   };
 
+  const enterImmersive = () => {
+    setIsImmersive(true);
+    setPinchScale(1);
+    setShowControls(false);
+    // Try to lock to landscape
+    try {
+      (screen.orientation as any)?.lock?.('landscape').catch(() => {});
+    } catch {}
+    // Also try fullscreen API
+    document.documentElement.requestFullscreen?.().catch(() => {});
+  };
+
+  const exitImmersive = () => {
+    setIsImmersive(false);
+    setIsFullscreen(false);
+    setPinchScale(1);
+    setShowControls(false);
+    if (controlsTimer.current) clearTimeout(controlsTimer.current);
+    try {
+      (screen.orientation as any)?.unlock?.();
+    } catch {}
+    document.exitFullscreen?.().catch(() => {});
+  };
+
   const toggleFullscreen = () => {
+    if (isImmersive) {
+      exitImmersive();
+      return;
+    }
+    // On touch devices, always use immersive mode
+    if ('ontouchstart' in window || window.innerWidth < 768) {
+      enterImmersive();
+      return;
+    }
     if (!document.fullscreenElement) {
       document.documentElement.requestFullscreen?.().catch(() => {});
       setIsFullscreen(true);
@@ -143,7 +221,7 @@ export default function App() {
   const Current = current.Component;
 
   return (
-    <div className="flex min-h-[100dvh] flex-col bg-pnp-blue-deep text-white font-sans selection:bg-pnp-red selection:text-white">
+    <div className={`flex min-h-[100dvh] flex-col bg-pnp-blue-deep text-white font-sans selection:bg-pnp-red selection:text-white ${isImmersive ? 'fixed inset-0 z-[9999]' : ''}`}>
       {/* Hidden print container for full 27-slide high-res PDF generation */}
       <div className="hidden print:block font-sans bg-pnp-blue-deep text-white">
         {slides.map((s, idx) => {
@@ -162,7 +240,7 @@ export default function App() {
       </div>
 
       {/* Header */}
-      <header className="print:hidden flex items-center justify-between gap-2 border-b border-white/10 px-3 py-2.5 sm:px-6 sm:py-3.5 bg-pnp-ink/85 backdrop-blur-md sticky top-0 z-50">
+      <header className={`print:hidden flex items-center justify-between gap-2 border-b border-white/10 px-3 py-2.5 sm:px-6 sm:py-3.5 bg-pnp-ink/85 backdrop-blur-md sticky top-0 z-50 ${isImmersive ? 'hidden' : ''}`}>
         <div className="flex items-center gap-2 sm:gap-3 min-w-0">
           <div className="flex h-7 w-7 sm:h-8 sm:w-8 shrink-0 items-center justify-center rounded-lg bg-pnp-red text-xs sm:text-sm font-bold text-white shadow-sm">
             TM
@@ -255,7 +333,7 @@ export default function App() {
       </header>
 
       {/* Dynamic Slide Progress Bar */}
-      <div className="print:hidden h-1 w-full bg-white/10">
+      <div className={`print:hidden h-1 w-full bg-white/10 ${isImmersive ? 'hidden' : ''}`}>
         <div
           className="h-full bg-pnp-red transition-all duration-300 ease-out"
           style={{ width: `${((i + 1) / slides.length) * 100}%` }}
@@ -304,11 +382,19 @@ export default function App() {
       ) : (
         <div className="print:hidden flex flex-col flex-1 min-h-0">
           <main
-            className="flex flex-1 items-center justify-center p-2 sm:p-4 md:p-6 touch-pan-y"
+            className={`flex flex-1 items-center justify-center touch-pan-y ${isImmersive ? 'p-0' : 'p-2 sm:p-4 md:p-6'}`}
             onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
           >
-            <div className="aspect-video w-full max-w-[1600px] max-h-[calc(100dvh-130px)] sm:max-h-[calc(100vh-150px)] overflow-hidden rounded-xl sm:rounded-2xl shadow-2xl bg-transparent">
+            <div
+              className={`aspect-video w-full overflow-hidden shadow-2xl bg-transparent transition-transform duration-100 ${
+                isImmersive
+                  ? 'max-w-full max-h-[100dvh] rounded-none'
+                  : 'max-w-[1600px] max-h-[calc(100dvh-130px)] sm:max-h-[calc(100vh-150px)] rounded-xl sm:rounded-2xl'
+              }`}
+              style={{ transform: pinchScale !== 1 ? `scale(${pinchScale})` : undefined }}
+            >
               <ScaledSlide>
                 <SlideIndexProvider value={i + 1}>
                   <Current />
@@ -317,7 +403,39 @@ export default function App() {
             </div>
           </main>
 
+          {/* Immersive mode floating controls - tap to show/hide */}
+          {isImmersive && (
+            <div
+              className={`fixed inset-x-0 bottom-0 z-[10000] flex items-center justify-center gap-3 px-4 py-3 bg-gradient-to-t from-black/70 to-transparent transition-all duration-300 ${showControls ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-full pointer-events-none'}`}
+            >
+              <button
+                onClick={(e) => { e.stopPropagation(); go(-1); }}
+                disabled={i === 0}
+                className="rounded-full bg-white/20 backdrop-blur-sm p-2.5 text-white disabled:opacity-30 active:scale-90 transition-transform"
+              >
+                <ChevronLeft className="w-6 h-6" />
+              </button>
+              <span className="text-sm text-white bg-black/40 backdrop-blur-sm rounded-full px-3 py-1 tabular-nums font-medium">
+                {i + 1} / {slides.length}
+              </span>
+              <button
+                onClick={(e) => { e.stopPropagation(); go(1); }}
+                disabled={i === slides.length - 1}
+                className="rounded-full bg-white/20 backdrop-blur-sm p-2.5 text-white disabled:opacity-30 active:scale-90 transition-transform"
+              >
+                <ChevronRight className="w-6 h-6" />
+              </button>
+              <button
+                onClick={(e) => { e.stopPropagation(); exitImmersive(); }}
+                className="rounded-full bg-pnp-red/80 backdrop-blur-sm p-2.5 text-white active:scale-90 transition-transform ml-2"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+          )}
+
           {/* Navigation Controls Footer */}
+          {!isImmersive && (
           <footer className="flex items-center justify-between sm:justify-center gap-2 sm:gap-4 px-4 pb-3 pt-1 sm:pb-5 text-white">
             <button
               onClick={() => go(-1)}
@@ -343,6 +461,7 @@ export default function App() {
               <ChevronRight className="w-4 h-4" />
             </button>
           </footer>
+          )}
         </div>
       )}
     </div>
