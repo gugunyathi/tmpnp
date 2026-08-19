@@ -1,8 +1,9 @@
 import type React from "react";
 import bikeCourier from "@/assets/bike-courier.jpg";
-import deliveryDoor from "@/assets/delivery-door.jpg";
-import diasporaShopper from "@/assets/diaspora-shopper.jpg";
-import storePicking from "@/assets/store-picking.jpg";
+import homePageImage from "@/assets/home-page.png";
+import slide2Image from "@/assets/slide-2.png";
+import slide6Image from "@/assets/slide-6.png";
+import slide11Image from "@/assets/slide-11.png";
 import logoRect from "@/assets/tmpnp-logo-rect.png";
 import logoSquare from "@/assets/tmpnp-logo-square.png";
 import { Body, Card, Pill, SlideBase, SlideChrome } from "@/components/slide-kit";
@@ -23,7 +24,7 @@ function TitleSlide() {
   return (
     <SlideBase tone="blue">
       <img
-        src={deliveryDoor}
+        src={homePageImage}
         alt="Courier handing groceries to a family at their door"
         referrerPolicy="no-referrer"
         width={1600}
@@ -38,7 +39,7 @@ function TitleSlide() {
         <span className="slide-kicker text-pnp-gold">Executive Board Proposal</span>
         <h1 className="slide-title-lg mt-6">TM Pick n Pay Express</h1>
         <p className="slide-subtitle mt-6 text-white/85">
-          Evolving Click &amp; Collect into Diaspora-to-Door delivery
+          Evolving Click &amp; Collect into Door-to-Door delivery
         </p>
         <div className="mt-10 h-[10px] w-[220px] rounded-full bg-pnp-red" />
         <p className="slide-body mt-10 text-white/70">
@@ -77,7 +78,7 @@ function OpportunitySlide() {
           </div>
           <div className="row-span-1 overflow-hidden rounded-3xl">
             <img
-              src={diasporaShopper}
+              src={slide2Image}
               alt="Diaspora shopper ordering groceries on her phone"
               referrerPolicy="no-referrer"
               width={1600}
@@ -132,13 +133,13 @@ function StatusQuoSlide() {
           <FlowRow
             tone="red"
             label="Current system — Click & Collect"
-            steps={["Diaspora shopper", "Web / app order", "Recipient must travel", "Urban branches only"]}
+            steps={["Local Shopper", "Web / app order", "Recipient must travel", "Urban branches only"]}
           />
           <FlowRow
             tone="green"
-            label="The evolution — On-demand diaspora engine"
+            label="The evolution — On-demand door delivery engine"
             steps={[
-              "Diaspora shopper",
+              "Local & Diaspora shopper",
               "Targeted ad tracking",
               "Pure US$ gateway",
               "Local bike courier",
@@ -451,7 +452,7 @@ function OptionsASlide() {
         </div>
         <div className="mt-8 overflow-hidden rounded-3xl">
           <img
-            src={storePicking}
+            src={slide6Image}
             alt="Store staff picking online grocery orders"
             referrerPolicy="no-referrer"
             width={1600}
@@ -540,7 +541,7 @@ function FirstMoverSlide() {
   return (
     <SlideBase tone="red">
       <img
-        src={deliveryDoor}
+        src={slide11Image}
         alt="Family receiving a grocery delivery"
         referrerPolicy="no-referrer"
         width={1600}
@@ -558,7 +559,7 @@ function FirstMoverSlide() {
               <Pill tone="light">Market leadership</Pill>
               <p className="slide-body-lg mt-5 text-white/90">
                 While competitors stay focused on brick-and-mortar or basic localized delivery, TM
-                PnP becomes the definitive cross-border retail pipeline for the diaspora ecosystem.
+                PnP becomes the definitive door-to-door retail pipeline for the local and diaspora ecosystem.
               </p>
             </div>
             <div className="rounded-3xl bg-white/12 p-10">
@@ -658,7 +659,7 @@ function CloseSlide() {
           <img src={logoSquare} alt="TM Pick n Pay" referrerPolicy="no-referrer" className="h-[110px] w-auto max-w-[170px] object-contain mx-auto" />
         </div>
         <h2 className="slide-title-lg mt-14 max-w-[1400px]">
-          Turn 74+ branches into a diaspora fulfilment network
+          Turn 74+ branches into a door-to-door fulfilment network
         </h2>
         <div className="mt-10 h-[10px] w-[240px] rounded-full bg-pnp-red" />
         <p className="slide-subtitle mt-10 max-w-[1200px] text-white/80">

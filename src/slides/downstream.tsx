@@ -574,7 +574,7 @@ function RevenueMixSlide() {
           {[
             [
               "Launch · US$17.1M",
-              "Diaspora-to-door on TM stock",
+              "Door-to-door on TMPNP stock",
               "Retail margin, delivery share and the cross-border surcharge carry the model. One recurring line: Diaspora Priority at US$647,280 — 4% of revenue.",
             ],
             [

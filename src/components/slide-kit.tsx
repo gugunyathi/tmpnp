@@ -59,7 +59,7 @@ export function SlideChrome({
       <div
         className={`slide-footer absolute bottom-[52px] left-[96px] right-[96px] flex justify-between ${dim}`}
       >
-        <span>TM Pick n Pay Express — Diaspora-to-Door</span>
+        <span>TM Pick n Pay Express — Door-to-Door</span>
         <span>Confidential · Executive Board Proposal</span>
       </div>
     </>

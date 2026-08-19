@@ -58,7 +58,7 @@ function chrome(slide, kicker, n, dark, narrow = 0) {
   slide.addImage({ data: LOGO, x: 0.54, y: 0.35, w: 1.56, h: 0.22 });
   slide.addText(kicker.toUpperCase(), { x: 2.35, y: 0.32, w: right - 2.95, h: 0.35, fontFace: BODY, fontSize: 10.5, bold: true, charSpacing: 1.5, color: dark ? "FFFFFF" : RED });
   slide.addText(String(n).padStart(2, "0"), { x: right - 0.55, y: 0.32, w: 0.55, h: 0.35, align: "right", fontFace: BODY, fontSize: 11, bold: true, color: dark ? "AAB6C8" : MUTED });
-  slide.addText("TM Pick n Pay Express — Diaspora-to-Door", { x: 0.45, y: H - 0.45, w: 5, h: 0.3, fontFace: BODY, fontSize: 9, color: dark ? "8C9BB0" : MUTED });
+  slide.addText("TM Pick n Pay Express — Door-to-Door", { x: 0.45, y: H - 0.45, w: 5, h: 0.3, fontFace: BODY, fontSize: 9, color: dark ? "8C9BB0" : MUTED });
   if (!narrow) slide.addText("Confidential · Executive Board Proposal", { x: W - 5.45, y: H - 0.45, w: 5, h: 0.3, align: "right", fontFace: BODY, fontSize: 9, color: dark ? "8C9BB0" : MUTED });
 }
 
@@ -96,7 +96,7 @@ function panel(slide, { x, y, w, h, heading, body, fill = "1E426F", head = WHITE
   
   s.addText("EXECUTIVE BOARD PROPOSAL", { x: 0.45, y: 1.6, w: 5, h: 0.3, fontFace: BODY, fontSize: 12, bold: true, charSpacing: 3, color: GOLD });
   s.addText("TM Pick n Pay Express", { x: 0.45, y: 2.0, w: 4.7, h: 0.75, fontFace: HEAD, fontSize: 33, bold: true, color: WHITE });
-  s.addText("Evolving Click & Collect into Diaspora-to-Door delivery", { x: 0.45, y: 2.85, w: 4.6, h: 0.7, fontFace: BODY, fontSize: 16, color: "D5DEEA" });
+  s.addText("Evolving Click & Collect into Door-to-Door delivery", { x: 0.45, y: 2.85, w: 4.6, h: 0.7, fontFace: BODY, fontSize: 16, color: "D5DEEA" });
   s.addShape(pptx.ShapeType.roundRect, { x: 0.45, y: 3.75, w: 1.2, h: 0.08, fill: { color: RED }, line: { color: RED }, rectRadius: 0.04 });
   s.addText("Prepared for the Executive Board · TM Pick n Pay Zimbabwe & Meikles Limited", { x: 0.45, y: 4.1, w: 4.6, h: 0.5, fontFace: BODY, fontSize: 11.5, color: "9FB0C6" });
 }
@@ -134,8 +134,8 @@ function panel(slide, { x, y, w, h, heading, body, fill = "1E426F", head = WHITE
       s.addText(st, { x, y: y + 0.6, w: bw, h: 0.42, align: "center", valign: "middle", fontFace: BODY, fontSize: 9.5, bold: true, color: INK, margin: 0 });
     });
   };
-  flow(1.8, "Current system — Click & Collect", RED, ["Diaspora shopper", "Web / app order", "Recipient must travel", "Urban branches only"]);
-  flow(3.1, "The evolution — On-demand diaspora engine", BLUE, ["Diaspora shopper", "Targeted ad tracking", "Pure US$ gateway", "Local bike courier", "Recipient's door"]);
+  flow(1.8, "Current system — Click & Collect", RED, ["Local Shopper", "Web / app order", "Recipient must travel", "Urban branches only"]);
+  flow(3.1, "The evolution — On-demand door delivery engine", BLUE, ["Local & Diaspora shopper", "Targeted ad tracking", "Pure US$ gateway", "Local bike courier", "Recipient's door"]);
   s.addShape(pptx.ShapeType.roundRect, { x: 0.45, y: 4.45, w: 4.45, h: 0.65, fill: { color: BLUE }, line: { color: BLUE }, rectRadius: 0.08 });
   s.addText("Rural and elderly recipients cannot easily reach a flagship branch such as Borrowdale or Kamfinsa to collect heavy hampers.", { x: 0.65, y: 4.45, w: 4.05, h: 0.65, valign: "middle", fontFace: BODY, fontSize: 9.5, color: WHITE, margin: 0 });
   s.addShape(pptx.ShapeType.roundRect, { x: 5.1, y: 4.45, w: 4.45, h: 0.65, fill: { color: RED }, line: { color: RED }, rectRadius: 0.08 });
@@ -203,7 +203,7 @@ function panel(slide, { x, y, w, h, heading, body, fill = "1E426F", head = WHITE
     s.addText(tag, { x: 0.68, y: y + 0.18, w: 1.75, h: 0.3, align: "center", valign: "middle", fontFace: BODY, fontSize: 9.5, bold: true, color: RED_DEEP, margin: 0 });
     s.addText(text, { x: 0.68, y: y + 0.58, w: 4.65, h: 0.68, fontFace: BODY, fontSize: 11, color: "FDE7EC", margin: 0, valign: "top" });
   };
-  block(1.95, "Market leadership", "While competitors stay focused on brick-and-mortar or basic localized delivery, TM PnP becomes the definitive cross-border retail pipeline for the diaspora ecosystem.");
+  block(1.95, "Market leadership", "While competitors stay focused on brick-and-mortar or basic localized delivery, TM PnP becomes the definitive door-to-door retail pipeline for the local and diaspora ecosystem.");
   block(3.45, "Maximising group assets", "Collection desks convert into high-volume dispatch stations, lifting stock turnover speed across all primary product lines.");
 }
 
@@ -713,7 +713,7 @@ function panel(slide, { x, y, w, h, heading, body, fill = "1E426F", head = WHITE
   chrome(s, "Future Revenue Mix", 24, true);
   title(s, "From transaction-led to subscription-led", true);
   const phases = [
-    ["LAUNCH · US$17.1M", "Diaspora-to-door on TM stock", "Retail margin, delivery share and the cross-border surcharge carry the model. One recurring line: Diaspora Priority at US$647,280 — 4% of revenue."],
+    ["LAUNCH · US$17.1M", "Door-to-door on TMPNP stock", "Retail margin, delivery share and the cross-border surcharge carry the model. One recurring line: Diaspora Priority at US$647,280 — 4% of revenue."],
     ["SCALE · +US$1.4M", "Second and third retailers onboard", "Tenant fees (US$717,120), rider plans (US$486,000) and garage cover (US$194,400) start billing monthly, whatever the basket does."],
     ["AGNOSTIC · US$21.8M", "Marketplace of retailers and tuck shops", "Shopper plans, tuck-shop apps and data licences add US$3.29M. Recurring revenue reaches US$5,338,980 — 24% of the ecosystem."],
   ];
@@ -753,7 +753,7 @@ function panel(slide, { x, y, w, h, heading, body, fill = "1E426F", head = WHITE
   s.background = { color: BLUE_DEEP };
   s.addShape(pptx.ShapeType.roundRect, { x: 4.2, y: 0.55, w: 1.6, h: 1.35, fill: { color: WHITE }, line: { color: WHITE }, rectRadius: 0.1 });
   s.addImage({ data: LOGO_SQUARE, x: 4.3, y: 0.65, w: 1.4, h: 1.15 });
-  s.addText("Turn 74+ branches into a diaspora fulfilment network", { x: 1.0, y: 2.1, w: 8, h: 1.0, align: "center", valign: "top", fontFace: HEAD, fontSize: 30, bold: true, color: WHITE });
+  s.addText("Turn 74+ branches into a door-to-door fulfilment network", { x: 1.0, y: 2.1, w: 8, h: 1.0, align: "center", valign: "top", fontFace: HEAD, fontSize: 30, bold: true, color: WHITE });
   s.addShape(pptx.ShapeType.roundRect, { x: 4.4, y: 3.25, w: 1.2, h: 0.08, fill: { color: RED }, line: { color: RED }, rectRadius: 0.04 });
   s.addText("Recommended next step: select a commercial structure and mandate a 60-day pilot on two flagship Harare branches.", { x: 1.6, y: 3.6, w: 6.8, h: 0.9, align: "center", fontFace: BODY, fontSize: 15, color: "C6D3E4" });
   s.addText("TM Pick n Pay Express", { x: 0.45, y: H - 0.5, w: 4, h: 0.3, fontFace: BODY, fontSize: 9, color: "8C9BB0" });

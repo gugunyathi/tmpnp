@@ -1,18 +1,57 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { ScaledSlide } from "@/components/ScaledSlide";
 import { SlideIndexProvider } from "@/components/slide-kit";
 import { slides } from "@/slides/deck";
-import { Download, FileDown, FileText, Grid, LayoutGrid, MonitorPlay, Presentation, Printer } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  FileDown,
+  FileText,
+  Grid,
+  LayoutGrid,
+  Maximize2,
+  Minimize2,
+  Presentation,
+  Printer,
+} from "lucide-react";
 
 export default function App() {
   const [i, setI] = useState(0);
   const [grid, setGrid] = useState(false);
   const [downloading, setDownloading] = useState<string | null>(null);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
+  // Touch gesture handling for mobile swipe
+  const touchStartX = useRef<number | null>(null);
+  const touchStartY = useRef<number | null>(null);
 
   const go = useCallback(
     (n: number) => setI((c) => Math.min(slides.length - 1, Math.max(0, c + n))),
     [],
   );
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null || touchStartY.current === null) return;
+    const deltaX = e.changedTouches[0].clientX - touchStartX.current;
+    const deltaY = e.changedTouches[0].clientY - touchStartY.current;
+
+    // Only trigger swipe if horizontal distance > 45px and dominant over vertical
+    if (Math.abs(deltaX) > 45 && Math.abs(deltaX) > Math.abs(deltaY)) {
+      if (deltaX < 0) {
+        go(1); // Swipe left -> next slide
+      } else {
+        go(-1); // Swipe right -> previous slide
+      }
+    }
+
+    touchStartX.current = null;
+    touchStartY.current = null;
+  };
 
   const downloadFile = async (filename: string) => {
     try {
@@ -63,6 +102,24 @@ export default function App() {
     }
   };
 
+  const toggleFullscreen = () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen?.().catch(() => {});
+      setIsFullscreen(true);
+    } else {
+      document.exitFullscreen?.().catch(() => {});
+      setIsFullscreen(false);
+    }
+  };
+
+  useEffect(() => {
+    const onFullscreenChange = () => {
+      setIsFullscreen(Boolean(document.fullscreenElement));
+    };
+    document.addEventListener("fullscreenchange", onFullscreenChange);
+    return () => document.removeEventListener("fullscreenchange", onFullscreenChange);
+  }, []);
+
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "ArrowRight" || e.key === " ") go(1);
@@ -70,7 +127,7 @@ export default function App() {
       if (e.key.toLowerCase() === "g") setGrid((g) => !g);
       if (e.key === "F5") {
         e.preventDefault();
-        document.documentElement.requestFullscreen?.();
+        toggleFullscreen();
       }
     };
     window.addEventListener("keydown", onKey);
@@ -86,13 +143,16 @@ export default function App() {
   const Current = current.Component;
 
   return (
-    <div className="flex min-h-screen flex-col bg-pnp-blue-deep text-white font-sans selection:bg-pnp-red selection:text-white">
+    <div className="flex min-h-[100dvh] flex-col bg-pnp-blue-deep text-white font-sans selection:bg-pnp-red selection:text-white">
       {/* Hidden print container for full 27-slide high-res PDF generation */}
       <div className="hidden print:block font-sans bg-pnp-blue-deep text-white">
         {slides.map((s, idx) => {
           const C = s.Component;
           return (
-            <div key={s.id} className="print-slide w-[1920px] h-[1080px] overflow-hidden relative page-break-after-always">
+            <div
+              key={s.id}
+              className="print-slide w-[1920px] h-[1080px] overflow-hidden relative page-break-after-always"
+            >
               <SlideIndexProvider value={idx + 1}>
                 <C />
               </SlideIndexProvider>
@@ -101,98 +161,121 @@ export default function App() {
         })}
       </div>
 
-      <header className="print:hidden flex flex-wrap items-center justify-between gap-3 border-b border-white/10 px-6 py-3.5 bg-pnp-ink/80 backdrop-blur-md sticky top-0 z-50">
-        <div className="flex items-center gap-3">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-pnp-red font-bold text-white shadow-sm">
+      {/* Header */}
+      <header className="print:hidden flex items-center justify-between gap-2 border-b border-white/10 px-3 py-2.5 sm:px-6 sm:py-3.5 bg-pnp-ink/85 backdrop-blur-md sticky top-0 z-50">
+        <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+          <div className="flex h-7 w-7 sm:h-8 sm:w-8 shrink-0 items-center justify-center rounded-lg bg-pnp-red text-xs sm:text-sm font-bold text-white shadow-sm">
             TM
           </div>
-          <div>
-            <h1 className="text-sm font-semibold tracking-tight text-white leading-tight">
+          <div className="min-w-0">
+            <h1 className="text-xs sm:text-sm font-bold tracking-tight text-white leading-tight truncate">
               TM Pick n Pay Express
             </h1>
-            <p className="text-[11px] text-white/60 leading-tight">
-              Diaspora-to-Door Delivery Engine Pitch Deck
+            <p className="text-[10px] sm:text-[11px] text-white/60 leading-tight hidden xs:block truncate">
+              Diaspora-to-Door Delivery Engine
             </p>
           </div>
-          <span className="ml-2 hidden sm:inline-flex rounded-full bg-white/10 px-2.5 py-0.5 text-xs text-white/80 font-medium">
-            Slide {i + 1} of {slides.length}
+          <span className="shrink-0 rounded-full bg-white/10 px-2 py-0.5 text-[10px] sm:text-xs text-white/80 font-medium">
+            {i + 1}/{slides.length}
           </span>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+          {/* Grid Toggle Button */}
           <button
             onClick={() => setGrid((g) => !g)}
             aria-label={grid ? "Switch to slide view" : "Switch to grid view"}
-            className="flex items-center gap-1.5 cursor-pointer rounded-full border border-white/20 px-3.5 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-white/10 active:scale-95"
+            className="flex items-center gap-1 cursor-pointer rounded-full border border-white/20 px-2.5 sm:px-3.5 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-white/10 active:scale-95"
           >
-            {grid ? <LayoutGrid className="w-3.5 h-3.5" /> : <Grid className="w-3.5 h-3.5" />}
-            <span>{grid ? "Slide view" : "Grid view (G)"}</span>
+            {grid ? (
+              <LayoutGrid className="w-3.5 h-3.5" />
+            ) : (
+              <Grid className="w-3.5 h-3.5" />
+            )}
+            <span className="hidden sm:inline">
+              {grid ? "Slide view" : "Grid view (G)"}
+            </span>
           </button>
 
-          <div className="h-4 w-px bg-white/20 mx-1 hidden sm:block" />
+          {/* Desktop-Only Download Buttons (hidden on mobile screens < 768px) */}
+          <div className="h-4 w-px bg-white/20 mx-0.5 hidden md:block" />
 
-          {/* Download PDF */}
+          {/* Download PDF - hidden on mobile */}
           <button
             onClick={() => downloadFile("TM-Pick-n-Pay-Express.pdf")}
             disabled={downloading === "TM-Pick-n-Pay-Express.pdf"}
             title="Download PDF version of presentation (27 slides)"
-            className="flex items-center gap-1.5 cursor-pointer rounded-full bg-white px-3.5 py-1.5 text-xs font-bold text-pnp-blue-deep transition-all hover:bg-white/90 hover:shadow-md active:scale-95 disabled:opacity-50"
+            className="hidden md:inline-flex items-center gap-1.5 cursor-pointer rounded-full bg-white px-3.5 py-1.5 text-xs font-bold text-pnp-blue-deep transition-all hover:bg-white/90 hover:shadow-md active:scale-95 disabled:opacity-50"
           >
             <FileText className="w-3.5 h-3.5 text-pnp-red" />
-            <span>{downloading === "TM-Pick-n-Pay-Express.pdf" ? "Downloading..." : "PDF"}</span>
+            <span>
+              {downloading === "TM-Pick-n-Pay-Express.pdf" ? "Downloading..." : "PDF"}
+            </span>
           </button>
 
-          {/* Print PDF */}
+          {/* Print PDF - hidden on mobile & tablets */}
           <button
             onClick={() => window.print()}
             title="Print or Save all slides directly as PDF via Browser Print"
-            className="flex items-center gap-1.5 cursor-pointer rounded-full border border-white/30 px-3 py-1.5 text-xs font-semibold text-white transition-all hover:bg-white/15 active:scale-95"
+            className="hidden lg:inline-flex items-center gap-1.5 cursor-pointer rounded-full border border-white/30 px-3 py-1.5 text-xs font-semibold text-white transition-all hover:bg-white/15 active:scale-95"
           >
             <Printer className="w-3.5 h-3.5 text-pnp-gold" />
-            <span className="hidden sm:inline">Print / Save PDF</span>
+            <span>Print</span>
           </button>
 
-          {/* Download PPTX */}
+          {/* Download PPTX - hidden on mobile */}
           <button
             onClick={() => downloadFile("TM-Pick-n-Pay-Express.pptx")}
             disabled={downloading === "TM-Pick-n-Pay-Express.pptx"}
             title="Download modern editable PPTX PowerPoint presentation (27 slides)"
-            className="flex items-center gap-1.5 cursor-pointer rounded-full bg-pnp-red px-3.5 py-1.5 text-xs font-bold text-white transition-all hover:bg-pnp-red-deep hover:shadow-md active:scale-95 disabled:opacity-50"
+            className="hidden md:inline-flex items-center gap-1.5 cursor-pointer rounded-full bg-pnp-red px-3.5 py-1.5 text-xs font-bold text-white transition-all hover:bg-pnp-red-deep hover:shadow-md active:scale-95 disabled:opacity-50"
           >
             <Presentation className="w-3.5 h-3.5" />
-            <span>{downloading === "TM-Pick-n-Pay-Express.pptx" ? "Downloading..." : "PPTX"}</span>
+            <span>
+              {downloading === "TM-Pick-n-Pay-Express.pptx" ? "Downloading..." : "PPTX"}
+            </span>
           </button>
 
-          {/* Download PPT */}
+          {/* Download PPT Legacy - hidden on mobile & tablets */}
           <button
             onClick={() => downloadFile("TM-Pick-n-Pay-Express.ppt")}
             disabled={downloading === "TM-Pick-n-Pay-Express.ppt"}
             title="Download binary PPT PowerPoint format (27 slides)"
-            className="flex items-center gap-1.5 cursor-pointer rounded-full bg-white/15 px-3.5 py-1.5 text-xs font-semibold text-white transition-all hover:bg-white/25 active:scale-95 disabled:opacity-50"
+            className="hidden xl:inline-flex items-center gap-1.5 cursor-pointer rounded-full bg-white/15 px-3 py-1.5 text-xs font-semibold text-white transition-all hover:bg-white/25 active:scale-95 disabled:opacity-50"
           >
             <FileDown className="w-3.5 h-3.5 text-pnp-gold" />
-            <span>{downloading === "TM-Pick-n-Pay-Express.ppt" ? "Downloading..." : "PPT (Legacy)"}</span>
+            <span>PPT (Legacy)</span>
           </button>
 
+          {/* Fullscreen / Present Button */}
           <button
-            onClick={() => {
-              if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen?.();
-              } else {
-                document.exitFullscreen?.();
-              }
-            }}
-            title="Present full screen (F5)"
-            className="flex items-center gap-1.5 cursor-pointer rounded-full border border-white/20 px-3.5 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-white/10 active:scale-95"
+            onClick={toggleFullscreen}
+            title={isFullscreen ? "Exit Fullscreen" : "Present full screen (F5)"}
+            className="flex items-center gap-1.5 cursor-pointer rounded-full border border-white/20 p-1.5 sm:px-3 sm:py-1.5 text-xs font-semibold text-white transition-colors hover:bg-white/10 active:scale-95"
           >
-            <MonitorPlay className="w-3.5 h-3.5" />
-            <span className="hidden md:inline">Present</span>
+            {isFullscreen ? (
+              <Minimize2 className="w-3.5 h-3.5" />
+            ) : (
+              <Maximize2 className="w-3.5 h-3.5" />
+            )}
+            <span className="hidden sm:inline">
+              {isFullscreen ? "Exit" : "Present"}
+            </span>
           </button>
         </div>
       </header>
 
+      {/* Dynamic Slide Progress Bar */}
+      <div className="print:hidden h-1 w-full bg-white/10">
+        <div
+          className="h-full bg-pnp-red transition-all duration-300 ease-out"
+          style={{ width: `${((i + 1) / slides.length) * 100}%` }}
+        />
+      </div>
+
+      {/* Main View Area */}
       {grid ? (
-        <div className="print:hidden grid flex-1 grid-cols-1 gap-6 overflow-auto p-6 sm:grid-cols-2 xl:grid-cols-3">
+        <div className="print:hidden grid flex-1 grid-cols-1 gap-3 sm:gap-6 overflow-auto p-3 sm:p-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {slides.map((s, idx) => {
             const C = s.Component;
             return (
@@ -202,23 +285,25 @@ export default function App() {
                   setI(idx);
                   setGrid(false);
                 }}
-                className={`group cursor-pointer text-left transition-all ${
-                  idx === i ? "ring-2 ring-pnp-red rounded-xl" : ""
+                className={`group cursor-pointer text-left transition-all p-1.5 rounded-xl ${
+                  idx === i
+                    ? "ring-2 ring-pnp-red bg-white/5"
+                    : "hover:bg-white/5"
                 }`}
               >
-                <div className="aspect-video overflow-hidden rounded-xl border border-white/15 bg-pnp-paper shadow-md">
+                <div className="aspect-video overflow-hidden rounded-lg border border-white/15 bg-pnp-paper shadow-md">
                   <ScaledSlide>
                     <SlideIndexProvider value={idx + 1}>
                       <C />
                     </SlideIndexProvider>
                   </ScaledSlide>
                 </div>
-                <div className="mt-2 flex items-center justify-between text-xs font-medium text-white/80">
-                  <span>
+                <div className="mt-2 flex items-center justify-between text-xs font-medium text-white/80 px-1">
+                  <span className="truncate mr-2">
                     {idx + 1}. {s.title}
                   </span>
                   {idx === i && (
-                    <span className="rounded bg-pnp-red/30 px-1.5 py-0.5 text-[10px] text-pnp-red">
+                    <span className="shrink-0 rounded bg-pnp-red px-1.5 py-0.5 text-[10px] text-white font-bold">
                       Current
                     </span>
                   )}
@@ -228,9 +313,13 @@ export default function App() {
           })}
         </div>
       ) : (
-        <div className="print:hidden flex flex-col flex-1">
-          <main className="flex flex-1 items-center justify-center p-4">
-            <div className="aspect-video h-full max-h-[calc(100vh-160px)] w-full max-w-[1600px] overflow-hidden rounded-2xl shadow-2xl">
+        <div className="print:hidden flex flex-col flex-1 min-h-0">
+          <main
+            className="flex flex-1 items-center justify-center p-2 sm:p-4 md:p-6 touch-pan-y"
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
+          >
+            <div className="aspect-video w-full max-w-[1600px] max-h-[calc(100dvh-130px)] sm:max-h-[calc(100vh-150px)] overflow-hidden rounded-xl sm:rounded-2xl shadow-2xl bg-pnp-paper">
               <ScaledSlide>
                 <SlideIndexProvider value={i + 1}>
                   <Current />
@@ -238,25 +327,31 @@ export default function App() {
               </ScaledSlide>
             </div>
           </main>
-          <footer className="flex items-center justify-center gap-4 pb-6 text-white">
+
+          {/* Navigation Controls Footer */}
+          <footer className="flex items-center justify-between sm:justify-center gap-2 sm:gap-4 px-4 pb-3 pt-1 sm:pb-5 text-white">
             <button
               onClick={() => go(-1)}
               disabled={i === 0}
               aria-label="Previous slide"
-              className="cursor-pointer rounded-full border border-white/25 px-5 py-2 text-sm font-semibold transition-colors hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-40"
+              className="cursor-pointer rounded-full border border-white/25 px-4 sm:px-5 py-2 text-sm font-semibold transition-colors hover:bg-white/10 active:scale-95 disabled:cursor-not-allowed disabled:opacity-30 min-h-[40px] flex items-center gap-1"
             >
-              ←
+              <ChevronLeft className="w-4 h-4" />
+              <span className="hidden xs:inline">Prev</span>
             </button>
-            <span className="text-sm tabular-nums text-white/70">
+
+            <span className="text-xs sm:text-sm tabular-nums text-white/80 font-medium text-center truncate max-w-[180px] xs:max-w-[280px] sm:max-w-[400px]">
               {i + 1} / {slides.length} · {current.title}
             </span>
+
             <button
               onClick={() => go(1)}
               disabled={i === slides.length - 1}
               aria-label="Next slide"
-              className="cursor-pointer rounded-full border border-white/25 px-5 py-2 text-sm font-semibold transition-colors hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-40"
+              className="cursor-pointer rounded-full border border-white/25 px-4 sm:px-5 py-2 text-sm font-semibold transition-colors hover:bg-white/10 active:scale-95 disabled:cursor-not-allowed disabled:opacity-30 min-h-[40px] flex items-center gap-1"
             >
-              →
+              <span className="hidden xs:inline">Next</span>
+              <ChevronRight className="w-4 h-4" />
             </button>
           </footer>
         </div>
@@ -264,3 +359,4 @@ export default function App() {
     </div>
   );
 }
+
