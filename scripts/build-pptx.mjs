@@ -20,17 +20,19 @@ fs.mkdirSync(assetDir, { recursive: true });
 function cropImage(src, target, gravity, width, height) {
   const outPath = resolve(assetDir, target);
   try {
-    execSync(`convert "${src}" -gravity ${gravity} -crop ${width}x${height}+0+0 +repage "${outPath}"`);
+    execSync(`convert "${src}" -gravity ${gravity} -crop ${width}x${height}+0+0 +repage "${outPath}"`, { stdio: 'ignore' });
   } catch (e) {
-    if (!fs.existsSync(outPath)) throw e;
+    if (!fs.existsSync(outPath)) {
+      fs.copyFileSync(resolve(src), outPath);
+    }
   }
   return outPath;
 }
 
 const pCover = cropImage("src/assets/delivery-door.jpg", "door-cover.jpg", "East", 924, 1000);
-const pFirstMover = cropImage("src/assets/delivery-door.jpg", "door-fm.jpg", "East", 782, 1000);
+const pFirstMover = "public/Slide6Image.png";
 const pShopper = cropImage("src/assets/diaspora-shopper.jpg", "shopper-card.jpg", "Center", 780, 1000);
-const pPickingBanner = cropImage("src/assets/store-picking.jpg", "picking-banner.jpg", "Center", 1600, 202);
+const pPickingBanner = "public/Slide11Image.png";
 const pBikeBanner = cropImage("src/assets/bike-courier.jpg", "bike-banner.jpg", "Center", 1600, 202);
 
 const img = (p) => `image/${p.endsWith(".png") ? "png" : "jpeg"};base64,${fs.readFileSync(p).toString("base64")}`;
@@ -51,15 +53,17 @@ const H = 5.625;
 const HEAD = "Georgia";
 const BODY = "Calibri";
 
-function chrome(slide, kicker, n, dark, narrow = 0) {
+function chrome(slide, kicker, n, dark, narrow = 0, hideFooter = false) {
   const right = narrow ? narrow : W - 0.45;
   // White pill container with logo maintaining exact 7.11 aspect ratio
   slide.addShape(pptx.ShapeType.roundRect, { x: 0.45, y: 0.28, w: 1.75, h: 0.42, fill: { color: WHITE }, line: { color: WHITE }, rectRadius: 0.08 });
   slide.addImage({ data: LOGO, x: 0.54, y: 0.35, w: 1.56, h: 0.22 });
   slide.addText(kicker.toUpperCase(), { x: 2.35, y: 0.32, w: right - 2.95, h: 0.35, fontFace: BODY, fontSize: 10.5, bold: true, charSpacing: 1.5, color: dark ? "FFFFFF" : RED });
   slide.addText(String(n).padStart(2, "0"), { x: right - 0.55, y: 0.32, w: 0.55, h: 0.35, align: "right", fontFace: BODY, fontSize: 11, bold: true, color: dark ? "AAB6C8" : MUTED });
-  slide.addText("TM Pick n Pay Express — Door-to-Door", { x: 0.45, y: H - 0.45, w: 5, h: 0.3, fontFace: BODY, fontSize: 9, color: dark ? "8C9BB0" : MUTED });
-  if (!narrow) slide.addText("Confidential · Executive Board Proposal", { x: W - 5.45, y: H - 0.45, w: 5, h: 0.3, align: "right", fontFace: BODY, fontSize: 9, color: dark ? "8C9BB0" : MUTED });
+  if (!hideFooter) {
+    slide.addText("TM Pick n Pay Express — Door-to-Door", { x: 0.45, y: H - 0.45, w: 5, h: 0.3, fontFace: BODY, fontSize: 9, color: dark ? "8C9BB0" : MUTED });
+    if (!narrow) slide.addText("Confidential · Executive Board Proposal", { x: W - 5.45, y: H - 0.45, w: 5, h: 0.3, align: "right", fontFace: BODY, fontSize: 9, color: dark ? "8C9BB0" : MUTED });
+  }
 }
 
 function title(slide, text, dark, y = 0.92) {
@@ -110,7 +114,7 @@ function panel(slide, { x, y, w, h, heading, body, fill = "1E426F", head = WHITE
   const cw = 2.15, ch = 3.15;
   card(s, { x: 0.45, y: 1.8, w: cw, h: ch, heading: "The foundation", body: "tmpnponline.co.zw and the dedicated app are already live, running localized Click & Collect across the estate.", hs: 13, bs: 10, hh: 0.5 });
   card(s, { x: 0.45 + cw + 0.15, y: 1.8, w: cw, h: ch, heading: "The optimization gap", accent: BLUE, body: "Collection demands transport, fuel and time. Diaspora buyers still pay Malayitsha vans purely for doorstep convenience.", hs: 13, bs: 10, hh: 0.5 });
-  card(s, { x: 0.45 + 2 * (cw + 0.15), y: 1.8, w: cw, h: ch, heading: "Our value proposition", body: "A Diaspora UI mode plus a decentralised last-mile network turns 74+ branches into on-demand fulfilment nodes.", hs: 13, bs: 10, hh: 0.5 });
+  card(s, { x: 0.45 + 2 * (cw + 0.15), y: 1.8, w: cw, h: ch, heading: "Our value proposition", body: "A online shopping click-to-deliver platform plus a decentralised last-mile network turns 74+ branches into on-demand fulfilment nodes.", hs: 13, bs: 10, hh: 0.5 });
   
   // Right side photo matching web app card
   s.addShape(pptx.ShapeType.roundRect, { x: 7.35, y: 1.8, w: 2.2, h: ch, fill: { color: WHITE }, line: { color: "E2E5EB" }, rectRadius: 0.08 });
@@ -290,7 +294,7 @@ function panel(slide, { x, y, w, h, heading, body, fill = "1E426F", head = WHITE
 {
   const s = pptx.addSlide();
   s.background = { color: PAPER };
-  chrome(s, "Financial Architecture · GMV vs Revenue", 9, false);
+  chrome(s, "Financial Architecture · GMV vs Revenue", 9, false, 0, true);
   title(s, "The Distinction: GMV vs. Ecosystem Revenue", false);
   s.addShape(pptx.ShapeType.roundRect, { x: 6.8, y: 0.98, w: 2.75, h: 0.36, fill: { color: BLUE }, line: { color: BLUE }, rectRadius: 0.18 });
   s.addText("Numbers Breakdown", { x: 6.8, y: 0.98, w: 2.75, h: 0.36, align: "center", valign: "middle", fontFace: BODY, fontSize: 9.5, bold: true, color: WHITE, margin: 0 });
@@ -361,7 +365,7 @@ function panel(slide, { x, y, w, h, heading, body, fill = "1E426F", head = WHITE
 {
   const s = pptx.addSlide();
   s.background = { color: PAPER };
-  chrome(s, "Slide 05 · Business Model Options", 10, false);
+  chrome(s, "Slide 05 · Business Model Options", 10, false, 0, true);
   title(s, "Aligning risk, capital and structure", false);
   
   const opts = [
@@ -407,7 +411,7 @@ function panel(slide, { x, y, w, h, heading, body, fill = "1E426F", head = WHITE
 {
   const s = pptx.addSlide();
   s.background = { color: BLUE_DEEP };
-  chrome(s, "Slide 06 · Configuration Matrix", 11, true);
+  chrome(s, "Slide 06 · Configuration Matrix", 11, true, 0, true);
   title(s, "Commercial model comparison", true);
   const head = ["Metric", "Option 1 · Independent Concierge (Reseller)", "Option 2 · White-Label Software Licensing"];
   const rows = [
@@ -478,8 +482,8 @@ function panel(slide, { x, y, w, h, heading, body, fill = "1E426F", head = WHITE
 {
   const s = pptx.addSlide();
   s.background = { color: PAPER };
-  chrome(s, "Slide 14 · Why Now", 14, false);
-  title(s, "Sell market access and intelligence — not “a diaspora solution”", false);
+  chrome(s, "Slide 14 · Why Now", 14, false, 0, true);
+  title(s, "A market intelligence driven model", false);
   const items = [
     ["Brick-and-mortar is no longer defensible", "Footfall retail cannot hold share on its own. The defensible asset is the customer relationship, not the store estate."],
     ["Buyers are price-led, not brand-led", "Households shop the cheapest basket available on the day. Informal channels are winning that comparison by default."],
@@ -489,15 +493,13 @@ function panel(slide, { x, y, w, h, heading, body, fill = "1E426F", head = WHITE
   items.forEach(([h, b], i) => {
     card(s, { x: 0.45 + (i % 2) * 4.68, y: 1.85 + Math.floor(i / 2) * 1.35, w: 4.42, h: 1.22, heading: h, body: b, accent: i % 2 ? BLUE : RED });
   });
-  s.addShape(pptx.ShapeType.roundRect, { x: 0.45, y: 4.6, w: 9.1, h: 0.62, fill: { color: BLUE }, line: { color: BLUE }, rectRadius: 0.08 });
-  s.addText("Positioning discipline: the pitch is market access and demand intelligence. Framed as a diaspora product, it reads as a niche remittance play and stalls in committee.", { x: 0.7, y: 4.6, w: 8.6, h: 0.62, valign: "middle", fontFace: BODY, fontSize: 10, color: WHITE, margin: 0 });
 }
 
 /* 17 — Retail-agnostic end state */
 {
   const s = pptx.addSlide();
   s.background = { color: BLUE_DEEP };
-  chrome(s, "Slide 15 · Downstream Innovation", 16, true);
+  chrome(s, "Slide 15 · Downstream Innovation", 16, true, 0, true);
   title(s, "The end state is a trading platform, not a single-retailer app", true);
   const phases = [
     ["Phase 1 · Entry", "TM Pick n Pay value-add", "Single-tenant. TM branded, TM catalogue, TM fulfilment. The platform earns its place inside one retailer before anything else is discussed."],
@@ -522,7 +524,7 @@ function panel(slide, { x, y, w, h, heading, body, fill = "1E426F", head = WHITE
 {
   const s = pptx.addSlide();
   s.background = { color: PAPER };
-  chrome(s, "Slide 16 · Price Comparison Engine", 17, false);
+  chrome(s, "Slide 16 · Price Comparison Engine", 17, false, 0, true);
   title(s, "Item-level price comparison is the reason to participate", false);
   s.addShape(pptx.ShapeType.roundRect, { x: 0.45, y: 1.85, w: 5.0, h: 3.25, fill: { color: WHITE }, line: { color: "E2E5EB" }, rectRadius: 0.08 });
   s.addText("SHOPPER REQUEST · “COOKING OIL”", { x: 0.7, y: 2.02, w: 4.5, h: 0.28, fontFace: BODY, fontSize: 9, bold: true, charSpacing: 1.5, color: MUTED, margin: 0 });
@@ -560,7 +562,7 @@ function panel(slide, { x, y, w, h, heading, body, fill = "1E426F", head = WHITE
 {
   const s = pptx.addSlide();
   s.background = { color: BLUE_DEEP };
-  chrome(s, "Slide 20 · Owned Delivery Network", 19, true);
+  chrome(s, "Slide 20 · Owned Delivery Network", 19, true, 0, true);
   title(s, "The last mile is owned, not outsourced", true);
   const stats = [["500–2,000", "Platform-owned electric scooters"], ["12 months", "Rent-to-buy, then the rider owns it"], ["~5 months", "Asset pays itself back"], ["~10%", "Platform fee per dollar earned after ownership"]];
   stats.forEach(([v, l], i) => {
@@ -583,7 +585,7 @@ function panel(slide, { x, y, w, h, heading, body, fill = "1E426F", head = WHITE
 {
   const s = pptx.addSlide();
   s.background = { color: PAPER };
-  chrome(s, "Slide 21 · Loyalty & Device Migration", 20, false);
+  chrome(s, "Slide 21 · Loyalty & Device Migration", 20, false, 0, true);
   title(s, "Trade US$100 a month for five months — earn the handset", false);
   ["Month 1", "Month 2", "Month 3", "Month 4", "Month 5"].forEach((m, i) => {
     const x = 0.45 + i * 1.85;
@@ -630,7 +632,7 @@ function panel(slide, { x, y, w, h, heading, body, fill = "1E426F", head = WHITE
 {
   const s = pptx.addSlide();
   s.background = { color: RED_DEEP };
-  chrome(s, "The Subscription Model", 22, true);
+  chrome(s, "The Subscription Model", 22, true, 0, true);
   title(s, "Anything that allows a subscription is the model. The rest is not sustainable.", true);
   const subs = [
     ["Rider fees", "Scooter rent-to-buy instalments, then a standing platform fee per dollar earned."],
@@ -732,7 +734,7 @@ function panel(slide, { x, y, w, h, heading, body, fill = "1E426F", head = WHITE
 {
   const s = pptx.addSlide();
   s.background = { color: BLUE_DEEP };
-  chrome(s, "Slide 24 · Commercial & Entity Structure", 25, true);
+  chrome(s, "Slide 24 · Commercial & Entity Structure", 25, true, 0, true);
   title(s, "Hybrid commercial model, two-country structure", true);
   const model = [
     ["White-label", "The storefront and app ship under the retailer's brand, licensed rather than sold."],

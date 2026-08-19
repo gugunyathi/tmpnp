@@ -72,7 +72,7 @@ function OpportunitySlide() {
               purely for doorstep convenience.
             </Card>
             <Card title="Our value proposition">
-              A Diaspora UI mode plus a decentralised last-mile network turns 74+ branches into
+              A online shopping click-to-deliver platform plus a decentralised last-mile network turns 74+ branches into
               on-demand fulfilment nodes.
             </Card>
           </div>
@@ -335,7 +335,7 @@ function DistinctionSlide() {
 
   return (
     <SlideBase>
-      <SlideChrome kicker="Financial Architecture · GMV vs Revenue" index={6} />
+      <SlideChrome kicker="Financial Architecture · GMV vs Revenue" index={6} hideFooter />
       <Body>
         <div className="flex items-baseline justify-between">
           <div>
@@ -431,7 +431,7 @@ function OptionCard({
 function OptionsASlide() {
   return (
     <SlideBase>
-      <SlideChrome kicker="Slide 05 · Business Model Options" index={6} />
+      <SlideChrome kicker="Slide 05 · Business Model Options" index={6} hideFooter />
       <Body>
         <h2 className="slide-title text-pnp-blue">Aligning risk, capital and structure</h2>
         <div className="mt-10 grid grid-cols-2 gap-8">
@@ -452,7 +452,7 @@ function OptionsASlide() {
         </div>
         <div className="mt-8 overflow-hidden rounded-3xl">
           <img
-            src={slide6Image}
+            src="/Slide11Image.png"
             alt="Store staff picking online grocery orders"
             referrerPolicy="no-referrer"
             width={1600}
@@ -480,7 +480,7 @@ const MATRIX = {
 function MatrixSlide() {
   return (
     <SlideBase tone="blue">
-      <SlideChrome kicker="Slide 06 · Configuration Matrix" index={7} tone="blue" />
+      <SlideChrome kicker="Slide 06 · Configuration Matrix" index={7} tone="blue" hideFooter />
       <Body>
         <h2 className="slide-title">Commercial model comparison</h2>
         <div className="mt-12 overflow-hidden rounded-3xl bg-white/8">
@@ -541,15 +541,13 @@ function FirstMoverSlide() {
   return (
     <SlideBase tone="red">
       <img
-        src={slide11Image}
-        alt="Family receiving a grocery delivery"
+        src="/Slide6Image.png"
+        alt="TM Pick n Pay delivery person"
         referrerPolicy="no-referrer"
-        width={1600}
-        height={1000}
-        loading="lazy"
-        className="absolute right-0 top-0 h-full w-[820px] object-cover opacity-40"
+        className="absolute right-0 top-0 h-full w-[45%] object-cover"
+        style={{ objectPosition: "center" }}
       />
-      <div className="absolute inset-0 bg-gradient-to-r from-pnp-red-deep via-pnp-red-deep/95 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-r from-pnp-red-deep via-pnp-red-deep/95 to-transparent" style={{ width: "60%" }} />
       <SlideChrome kicker="Slide 08 · First-Mover Advantage" index={10} tone="red" />
       <Body>
         <div className="w-[1050px]">

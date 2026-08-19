@@ -29,10 +29,10 @@ const PRESSURES: [string, string][] = [
 function WhyNowSlide() {
   return (
     <SlideBase>
-      <SlideChrome kicker="Slide 14 · Why Now" index={15} />
+      <SlideChrome kicker="Slide 14 · Why Now" index={15} hideFooter />
       <Body>
         <h2 className="slide-title text-pnp-blue">
-          Sell market access and intelligence — not &ldquo;a diaspora solution&rdquo;
+          A market intelligence driven model
         </h2>
         <div className="mt-12 grid grid-cols-2 gap-8">
           {PRESSURES.map(([t, d], i) => (
@@ -77,7 +77,7 @@ const PHASES: [string, string, string][] = [
 function AgnosticSlide() {
   return (
     <SlideBase tone="blue">
-      <SlideChrome kicker="Slide 15 · Downstream Innovation" index={16} tone="blue" />
+      <SlideChrome kicker="Slide 15 · Downstream Innovation" index={16} tone="blue" hideFooter />
       <Body>
         <h2 className="slide-title">
           The end state is a trading platform, not a single-retailer app
@@ -126,7 +126,7 @@ const OIL_ROWS: [string, string, string][] = [
 function PriceEngineSlide() {
   return (
     <SlideBase>
-      <SlideChrome kicker="Slide 16 · Price Comparison Engine" index={17} />
+      <SlideChrome kicker="Slide 16 · Price Comparison Engine" index={17} hideFooter />
       <Body>
         <h2 className="slide-title text-pnp-blue">
           Item-level price comparison is the reason to participate
@@ -187,7 +187,7 @@ const SUBS: [string, string][] = [
 function SubscriptionSlide() {
   return (
     <SlideBase tone="red">
-      <SlideChrome kicker="The Subscription Model" index={18} tone="red" />
+      <SlideChrome kicker="The Subscription Model" index={18} tone="red" hideFooter />
       <Body>
         <h2 className="slide-title">
           Anything that allows a subscription is the model. The rest is not sustainable.
@@ -223,7 +223,7 @@ const SCOOTER_STATS: [string, string][] = [
 function ScooterSlide() {
   return (
     <SlideBase tone="blue">
-      <SlideChrome kicker="Slide 20 · Owned Delivery Network" index={21} tone="blue" />
+      <SlideChrome kicker="Slide 20 · Owned Delivery Network" index={21} tone="blue" hideFooter />
       <Body>
         <h2 className="slide-title">The last mile is owned, not outsourced</h2>
         <div className="mt-10 grid grid-cols-4 gap-6">
@@ -281,7 +281,7 @@ function ScooterSlide() {
 function LoyaltySlide() {
   return (
     <SlideBase>
-      <SlideChrome kicker="Slide 21 · Loyalty & Device Migration" index={22} />
+      <SlideChrome kicker="Slide 21 · Loyalty & Device Migration" index={22} hideFooter />
       <Body>
         <h2 className="slide-title text-pnp-blue">
           Trade US$100 a month for five months — earn the handset
@@ -432,7 +432,7 @@ function WholesaleSlide() {
 function StructureSlide() {
   return (
     <SlideBase tone="blue">
-      <SlideChrome kicker="Slide 24 · Commercial & Entity Structure" index={25} tone="blue" />
+      <SlideChrome kicker="Slide 24 · Commercial & Entity Structure" index={25} tone="blue" hideFooter />
       <Body>
         <h2 className="slide-title">Hybrid commercial model, two-country structure</h2>
         <div className="mt-12 grid grid-cols-3 gap-8">

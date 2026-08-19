@@ -37,4 +37,4 @@ zin.close()
 print('repacked', dst)
 `;
 
-execFileSync("python3", ["-c", py, input, output], { stdio: "inherit" });
+execFileSync("python", ["-c", py, input, output], { stdio: "inherit" });

@@ -34,10 +34,12 @@ export function SlideChrome({
   kicker,
   index,
   tone = "paper",
+  hideFooter = false,
 }: {
   kicker: string;
   index: number;
   tone?: "paper" | "blue" | "red";
+  hideFooter?: boolean;
 }) {
   const dim = tone === "paper" ? "text-pnp-muted" : "text-white/60";
   const ctxIndex = useContext(SlideIndexContext);
@@ -56,12 +58,14 @@ export function SlideChrome({
       <div className={`slide-page absolute right-[96px] top-[84px] ${dim}`}>
         {String(n).padStart(2, "0")}
       </div>
-      <div
-        className={`slide-footer absolute bottom-[52px] left-[96px] right-[96px] flex justify-between ${dim}`}
-      >
-        <span>TM Pick n Pay Express — Door-to-Door</span>
-        <span>Confidential · Executive Board Proposal</span>
-      </div>
+      {!hideFooter && (
+        <div
+          className={`slide-footer absolute bottom-[52px] left-[96px] right-[96px] flex justify-between ${dim}`}
+        >
+          <span>TM Pick n Pay Express — Door-to-Door</span>
+          <span>Confidential · Executive Board Proposal</span>
+        </div>
+      )}
     </>
   );
 }
