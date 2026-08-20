@@ -59,32 +59,22 @@ function OpportunitySlide() {
         <h2 className="slide-title text-pnp-blue">
           Monetising the digital infrastructure you already own
         </h2>
-        <div className="mt-12 grid grid-cols-[1fr_1fr_1fr_620px] gap-8">
-          <div className="col-span-3 grid grid-cols-3 gap-8">
+        <div className="mt-12 grid grid-cols-[1fr_1.8fr_1fr] gap-8 h-[540px]">
             <Card title="The foundation">
               tmpnponline.co.zw and the dedicated app are already live, running localized Click
               &amp; Collect across the estate.
             </Card>
             <Card title="The optimization gap" accent="blue">
-              Collection demands transport, fuel and time. Diaspora buyers still pay Malayitsha vans
-              purely for doorstep convenience.
+              <ol className="list-decimal pl-6 space-y-4">
+                <li><strong>Diaspora Market</strong> – buyers continue to order and pay via Malayitsha (vans or buses) purely for cross‑border delivery.</li>
+                <li><strong>Informal Retail Traders Market</strong> – a wholesale supply gap exists, creating an opportunity to turn competitors into partners.</li>
+                <li><strong>Customer Convenience</strong> – online ordering and payment of goods plus doorstep delivery saves transport, fuel, and time.</li>
+              </ol>
             </Card>
             <Card title="Our value proposition">
               A online shopping click-to-deliver platform plus a decentralised last-mile network turns 74+ branches into
               on-demand fulfilment nodes.
             </Card>
-          </div>
-          <div className="row-span-1 overflow-hidden rounded-3xl">
-            <img
-              src={slide2Image}
-              alt="Diaspora shopper ordering groceries on her phone"
-              referrerPolicy="no-referrer"
-              width={1600}
-              height={1000}
-              loading="lazy"
-              className="h-[430px] w-full object-cover"
-            />
-          </div>
         </div>
       </Body>
     </SlideBase>
